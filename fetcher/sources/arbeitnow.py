@@ -1,4 +1,5 @@
 """Arbeitnow: Europe-heavy board. Only remote postings are kept."""
+from ..location import find_countries
 from ..normalize import job
 
 URL = "https://www.arbeitnow.com/api/job-board-api?page={page}"
@@ -10,7 +11,10 @@ def parse(data) -> list[dict]:
     for r in data.get("data", []):
         if not r.get("remote"):
             continue
-        loc = r.get("location", "")
+        loc = (r.get("location") or "").strip()
+        # Arbeitnow is a German board: "Homeoffice"/blank remote roles are remote-in-Germany.
+        if not find_countries(loc):
+            loc = f"Germany ({loc})" if loc else "Germany"
         out.append(job(
             source="arbeitnow",
             key=r.get("slug"),
@@ -19,7 +23,6 @@ def parse(data) -> list[dict]:
             url=r.get("url", ""),
             posted_at=r.get("created_at"),
             tags=r.get("tags", []) + r.get("job_types", []),
-            # Arbeitnow remote roles are typically remote within the listed country
             location=loc,
             description=r.get("description", ""),
             job_type=", ".join(r.get("job_types", [])),

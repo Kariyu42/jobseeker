@@ -23,7 +23,10 @@ def test_arbeitnow_only_remote():
         {"slug": "a", "company_name": "C", "title": "DevOps", "remote": True, "url": "u", "tags": [], "job_types": ["full time"], "location": "Berlin", "created_at": 1764000000, "description": ""},
         {"slug": "b", "company_name": "C", "title": "DevOps", "remote": False, "url": "u", "tags": [], "job_types": [], "location": "Berlin", "created_at": 1764000000, "description": ""},
     ], "links": {"next": None}}
-    assert len(arbeitnow.parse(data)) == 1
+    (j,) = arbeitnow.parse(data)
+    assert "berlin" in j["location"].lower()
+    data["data"][0]["location"] = "Homeoffice"
+    assert arbeitnow.parse(data)[0]["location"] == "Germany (Homeoffice)"
 
 
 def test_himalayas():
@@ -70,6 +73,8 @@ def test_hn():
         {"id": 10, "created_at_i": 1764000000, "text": "Acme | Senior SRE | REMOTE (EU) | Full-time<p>We run Kubernetes.</p>"},
         {"id": 11, "created_at_i": 1764000000, "text": "Beta | Frontend | REMOTE<p>React.</p>"},
         {"id": 12, "created_at_i": 1764000000, "text": "Gamma | DevOps | NYC onsite<p>No remote.</p>"},
+        {"id": 13, "created_at_i": 1764000000, "text": "Rootly | https://rootly.com | SF Bay, Toronto, APAC, Remote | engineering, product<p>We build incident infrastructure.</p>"},
     ]}
-    (j,) = hn.parse_thread(data)
+    j, j2 = hn.parse_thread(data)
+    assert j2["title"] == "Infrastructure role (see post)" and "http" not in j2["location"]
     assert j["company"] == "Acme" and j["title"] == "Senior SRE" and "EU" in j["location"]

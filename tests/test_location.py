@@ -75,3 +75,10 @@ def test_fractional_timezones():
     assert r["eligibility"] == "not_eligible" and "UTC+5.5" in r["reason"]
     r = classify(mk("Europe", timezones=[0, 1.0, 2]), ME)
     assert r["eligibility"] == "eligible" and "UTC+0 to UTC+2" in r["reason"]
+
+
+def test_unknown_country_in_structured_list_is_not_eligible():
+    r = classify(mk("Azerbaijan", location_list=["Azerbaijan"], timezones=[4]), ME)
+    assert r["eligibility"] == "not_eligible" and "Azerbaijan" in r["reason"]
+    r = classify(mk("Denmark, Brazil", location_list=["Denmark", "Brazil"]), ME)
+    assert r["eligibility"] == "eligible"
