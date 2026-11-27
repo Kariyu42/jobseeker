@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jobseeker · Remote DevOps</title>
+  <meta name="description" content="Remote DevOps / SRE / Platform jobs you can actually get hired for, with an application tracker.">
+  <meta name="theme-color" content="#0f766e">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <img src="icon.svg" alt="" width="28" height="28">
+      <div>
+        <h1>Jobseeker</h1>
+        <p id="updated" class="muted small">Loading…</p>
+      </div>
+    </div>
+    <button id="themeBtn" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">◐</button>
+  </header>
+
+  <main>
+    <!-- JOBS -->
+    <section id="view-jobs" class="view active" aria-label="Jobs">
+      <div class="filters">
+        <input id="q" type="search" placeholder="Search title, company, skill…" aria-label="Search">
+        <div class="seg" role="radiogroup" aria-label="Eligibility">
+          <button data-elig="eligible" class="on">✅ Can hire me</button>
+          <button data-elig="unclear">+ ⚠️ Unclear</button>
+          <button data-elig="all">All</button>
+        </div>
+        <details class="more" id="moreFilters">
+        <summary class="small">More filters</summary>
+        <div class="row">
+          <label>Sort
+            <select id="sort"><option value="score">Best match</option><option value="date">Newest</option></select>
+          </label>
+          <label>Posted
+            <select id="age">
+              <option value="0">Any time</option><option value="2">2 days</option>
+              <option value="7">7 days</option><option value="14">14 days</option>
+            </select>
+          </label>
+          <label>Source <select id="source"><option value="">All</option></select></label>
+        </div>
+        <div class="row">
+          <label class="grow">Min match <output id="minScoreOut">0</output>
+            <input id="minScore" type="range" min="0" max="90" step="5" value="0">
+          </label>
+          <label class="check"><input id="hideTracked" type="checkbox" checked> Hide tracked</label>
+          <label class="check"><input id="newOnly" type="checkbox"> New only</label>
+        </div>
+        </details>
+      </div>
+      <p id="count" class="muted small"></p>
+      <div id="jobs" class="list"></div>
+    </section>
+
+    <!-- TRACKER -->
+    <section id="view-tracker" class="view" aria-label="Tracker">
+      <div id="pipeline" class="pipeline"></div>
+      <div id="tracker" class="list"></div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section id="view-settings" class="view" aria-label="Settings">
+      <div class="panel">
+        <h2>Move your tracker between phone & laptop</h2>
+        <p class="muted small">Your saved/applied jobs live in this browser. Copy them across with a file, or turn on free auto-sync below.</p>
+        <div class="btns">
+          <button id="exportBtn" class="btn">⬇ Export</button>
+          <label class="btn">⬆ Import<input id="importFile" type="file" accept="application/json,.json" hidden></label>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h2>Auto-sync (free, via a private GitHub Gist)</h2>
+        <ol class="small muted">
+          <li>On GitHub: Settings → Developer settings → Personal access tokens → <b>Fine-grained</b> → Generate.</li>
+          <li>Account permissions → <b>Gists: Read and write</b>. Nothing else.</li>
+          <li>Paste the token here on <b>each</b> device. The first device creates the gist; copy its Gist ID to the other device.</li>
+        </ol>
+        <label class="stack">Token <input id="ghToken" type="password" autocomplete="off" placeholder="github_pat_…"></label>
+        <label class="stack">Gist ID <input id="gistId" type="text" autocomplete="off" placeholder="(created automatically on first sync)"></label>
+        <div class="btns">
+          <button id="syncBtn" class="btn primary">⟳ Sync now</button>
+          <button id="syncOff" class="btn">Turn off</button>
+        </div>
+        <p id="syncStatus" class="small muted"></p>
+        <p class="small muted">The token is stored only in this browser and only sent to api.github.com.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Your profile</h2>
+        <div id="profile" class="small"></div>
+        <p class="small muted">Change it in <a id="cfgLink" href="#" target="_blank" rel="noopener">config.yml</a> on GitHub. The next fetch uses it.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Sources (last run)</h2>
+        <div id="sources" class="small"></div>
+        <p class="small muted">Jobs refresh automatically every 6 hours. To refresh now: GitHub → Actions → <b>Fetch jobs</b> → Run workflow.</p>
+      </div>
+
+      <div class="panel">
+        <h2>Install as an app</h2>
+        <p class="small muted"><b>iPhone:</b> Safari → Share → Add to Home Screen. <b>Android:</b> Chrome menu → Install app. <b>Laptop:</b> install icon in the address bar.</p>
+        <p class="small"><a href="https://github.com/kariyu42/jobseeker/blob/HEAD/GUIDE.md" id="guideLink" target="_blank" rel="noopener">📘 Read the strategy guide: why remote applications get ignored</a></p>
+      </div>
+    </section>
+  </main>
+
+  <nav class="tabs" aria-label="Sections">
+    <button data-view="jobs" class="on"><span>🔎</span>Jobs</button>
+    <button data-view="tracker"><span>📋</span>Tracker <b id="trkBadge" class="badge" hidden></b></button>
+    <button data-view="settings"><span>⚙️</span>Settings</button>
+  </nav>
+
+  <template id="tpl-job">
+    <article class="card">
+      <div class="card-head">
+        <div class="score" title="Match score"></div>
+        <div class="grow">
+          <h3><a class="title" target="_blank" rel="noopener"></a></h3>
+          <p class="meta small muted"></p>
+        </div>
+      </div>
+      <p class="elig small"></p>
+      <div class="chips"></div>
+      <details>
+        <summary class="small">Details</summary>
+        <p class="desc small"></p>
+      </details>
+      <div class="actions">
+        <a class="btn primary open" target="_blank" rel="noopener">Open ↗</a>
+        <button class="btn save">☆ Save</button>
+        <button class="btn apply">✓ Applied</button>
+        <button class="btn hide" title="Not interested">✕</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
