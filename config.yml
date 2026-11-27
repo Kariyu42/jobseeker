@@ -1,0 +1,98 @@
+# ---------------------------------------------------------------------------
+# jobseeker configuration — edit this file, commit, and the next fetch run
+# (every 6h, or run it by hand from the Actions tab) uses the new settings.
+# ---------------------------------------------------------------------------
+
+me:
+  # Where you live right now (used to decide if a job can hire you).
+  home_country: France
+  # Where you are legally allowed to work. "EU" expands to all EU/EEA countries
+  # + Switzerland. Add others like "United Kingdom" if you have the right.
+  work_authorization: [EU]
+  # Places you'd happily move to / live in while working remotely.
+  # Jobs restricted to these places are treated as eligible too.
+  would_live_in: [Spain, Portugal, Germany, Netherlands, Italy, Greece, Croatia]
+  # Your working-hours range as UTC offsets. A job that requires a timezone
+  # outside this window is marked not eligible. France = UTC+1 (UTC+2 summer).
+  timezone_min: -1
+  timezone_max: 4
+  # junior | mid | senior | lead
+  level: mid
+  # Treat "remote within EU but you must be an employee in country X" as unclear
+  # rather than eligible? (false = more results, true = stricter)
+  strict_country: false
+
+# Your skills. Weight = how much a match should count (1-3).
+# Matched in title, tags and description. Add/remove to match your CV.
+skills:
+  kubernetes: 3
+  k8s: 3
+  terraform: 3
+  docker: 2
+  aws: 2
+  gcp: 2
+  azure: 1
+  ansible: 2
+  linux: 2
+  ci/cd: 2
+  github actions: 2
+  gitlab: 2
+  jenkins: 1
+  helm: 2
+  argocd: 2
+  prometheus: 2
+  grafana: 1
+  python: 1
+  bash: 1
+  go: 1
+  observability: 1
+  openstack: 1
+
+# A job is kept only if its title matches one of these (case-insensitive regex).
+title_include:
+  - devops
+  - dev ops
+  - devsecops
+  - mlops
+  - \bsre\b
+  - site reliability
+  - reliability engineer
+  - platform engineer
+  - platform engineering
+  - infrastructure
+  - \binfra\b
+  - cloud engineer
+  - cloud architect
+  - cloud operations
+  - kubernetes
+  - systems engineer
+  - system engineer
+  - sysadmin
+  - system administrator
+  - systems administrator
+  - linux engineer
+  - linux administrator
+  - release engineer
+  - build engineer
+  - observability
+  - production engineer
+  - automation engineer
+
+# ...and is dropped if the title matches any of these.
+title_exclude:
+  - sales
+  - account executive
+  - recruit
+  - marketing
+  - designer
+  - customer success
+  - support specialist
+  - intern\b
+  - "\\bmanager, (sales|marketing)"
+
+# Drop jobs older than this many days.
+max_age_days: 30
+
+# Optional: hide jobs whose *stated* max salary (USD/EUR per year) is below this.
+# 0 = don't filter. Jobs with no salary listed are always kept.
+min_salary: 0
