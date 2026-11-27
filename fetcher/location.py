@@ -219,6 +219,14 @@ def classify(job: dict, me: dict) -> dict:
         shown = sorted(reside_countries)
         return result("not_eligible", "Must live in " + ", ".join(shown[:3]).title() + ("…" if len(shown) > 3 else ""))
 
+    # Structured restriction lists (e.g. Himalayas) are authoritative: if none of the
+    # listed places is one you can work from, the job can't hire you, even when the
+    # country is one this module doesn't know by name.
+    listed = [x for x in job.get("location_list", []) if x]
+    if listed and not explicit_worldwide and not (covered & mine):
+        shown = ", ".join(listed[:3]) + ("…" if len(listed) > 3 else "")
+        return result("not_eligible", f"Restricted to {shown}")
+
     if covered:
         if covered & mine:
             if us_only_text and "united states" not in mine:
