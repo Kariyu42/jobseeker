@@ -68,3 +68,10 @@ def test_aliases_dont_overmatch():
     assert find_countries("Latin America") == set()
     assert find_countries("North America") == set()
     assert "united states" in find_countries("Remote, USA")
+
+
+def test_fractional_timezones():
+    r = classify(mk("Worldwide", timezones=[5.5]), ME)
+    assert r["eligibility"] == "not_eligible" and "UTC+5.5" in r["reason"]
+    r = classify(mk("Europe", timezones=[0, 1.0, 2]), ME)
+    assert r["eligibility"] == "eligible" and "UTC+0 to UTC+2" in r["reason"]

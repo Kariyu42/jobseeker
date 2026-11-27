@@ -84,16 +84,22 @@ def process(raw: list[dict], cfg: dict, now: datetime) -> list[dict]:
                 continue
         kept.append(j)
     kept = dedupe(kept)
+    out = []
     for j in kept:
-        loc = classify(j, cfg.get("me", {}))
-        j.update({
-            "scope": loc["scope"],
-            "eligibility": loc["eligibility"],
-            "elig_reason": loc["reason"],
-            "contractor": loc["contractor"],
-        })
-        j["score"], j["skills"] = score(j, cfg, now)
-    return kept
+        try:  # one odd posting must never break the whole run
+            loc = classify(j, cfg.get("me", {}))
+            j.update({
+                "scope": loc["scope"],
+                "eligibility": loc["eligibility"],
+                "elig_reason": loc["reason"],
+                "contractor": loc["contractor"],
+            })
+            j["score"], j["skills"] = score(j, cfg, now)
+        except Exception as e:
+            log.warning("skipped job %r from %s: %s", j.get("title"), j.get("source"), e)
+            continue
+        out.append(j)
+    return out
 
 
 def merge_history(fresh: list[dict], previous: dict, cfg: dict, now: datetime, failed: set[str] = frozenset()) -> list[dict]:
