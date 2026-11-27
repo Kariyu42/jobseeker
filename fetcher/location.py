@@ -131,6 +131,15 @@ def parse_offsets(text: str) -> list[int]:
     return out
 
 
+def fmt_offset(o: float) -> str:
+    return f"{o:+g}"
+
+
+def tz_range(offsets) -> str:
+    lo, hi = min(offsets), max(offsets)
+    return f"UTC{fmt_offset(lo)}" if lo == hi else f"UTC{fmt_offset(lo)} to UTC{fmt_offset(hi)}"
+
+
 def user_countries(me: dict) -> set[str]:
     allowed = set()
     for item in [me.get("home_country", "")] + list(me.get("work_authorization", [])) + list(me.get("would_live_in", [])):
@@ -205,7 +214,7 @@ def classify(job: dict, me: dict) -> dict:
                 "countries": sorted(countries)[:10], "contractor": contractor}
 
     if tz_ok is False:
-        return result("not_eligible", f"Timezone required: UTC{min(offsets):+d} to UTC{max(offsets):+d}")
+        return result("not_eligible", f"Timezone required: {tz_range(offsets)}")
     if reside_countries and not (reside_countries & mine):
         shown = sorted(reside_countries)
         return result("not_eligible", "Must live in " + ", ".join(shown[:3]).title() + ("…" if len(shown) > 3 else ""))
@@ -219,7 +228,7 @@ def classify(job: dict, me: dict) -> dict:
                 return result("unclear", "Country-specific: " + ", ".join(hit).title())
             if scope == "countries":
                 return result("eligible", "Hires in " + ", ".join(c.title() for c in hit[:3]))
-            return result("eligible", "Hires in your region" + (f" (UTC{min(offsets):+d} to UTC{max(offsets):+d})" if offsets else ""))
+            return result("eligible", "Hires in your region" + (f" ({tz_range(offsets)})" if offsets else ""))
         if not worldwide:
             where = ", ".join(sorted(countries)[:3]).title() or ", ".join(sorted(regions)).upper()
             return result("not_eligible", f"Restricted to {where}")
