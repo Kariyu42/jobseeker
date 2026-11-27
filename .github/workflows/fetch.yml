@@ -5,7 +5,7 @@ on:
     - cron: "17 */6 * * *"   # every 6 hours
   workflow_dispatch:          # "Run workflow" button in the Actions tab
   push:
-    branches: [main]
+    branches: [master, main]
     paths: ["config.yml", "fetcher/**"]
 
 permissions:

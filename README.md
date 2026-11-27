@@ -22,12 +22,11 @@ GitHub Actions (free, every 6h)                GitHub Pages (free)
 
 ## Setup (about 5 minutes)
 
-1. **Merge to `main`.** Scheduled workflows only run on the default branch.
-2. **Make the repo public:** Settings → General → Danger Zone → Change visibility. GitHub Pages and Actions are free and unlimited on public repos. The repo only contains public job listings and your skill keywords: **don't put your CV, email or phone number in it.**
-3. **Turn on Pages:** Settings → Pages → Source *Deploy from a branch* → Branch `main`, folder `/docs` → Save.
-4. **Allow the workflow to commit:** Settings → Actions → General → Workflow permissions → *Read and write permissions* → Save.
-5. **First fetch:** Actions tab → **Fetch jobs** → *Run workflow*. After about a minute, open `https://<your-username>.github.io/jobseeker/`.
-6. **On your phone**, open that URL:
+1. **Merge into the default branch (`master`).** Scheduled workflows only run there. The workflow already has permission to commit (`permissions: contents: write`).
+2. **Make the repo public:** Settings → General → Danger Zone → Change visibility. On GitHub Free, Pages only works for public repos, and Actions minutes are unlimited there. The repo only contains public job listings and your skill keywords: **don't put your CV, email or phone number in it.**
+3. **Turn on Pages:** Settings → Pages → Source *Deploy from a branch* → Branch `master`, folder `/docs` → Save.
+4. **First fetch:** Actions tab → **Fetch jobs** → *Run workflow*. After about a minute, open `https://<your-username>.github.io/jobseeker/`.
+5. **On your phone**, open that URL:
    - iPhone: Safari → Share → *Add to Home Screen*
    - Android: Chrome menu → *Install app*
 

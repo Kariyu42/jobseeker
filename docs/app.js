@@ -247,8 +247,8 @@
       el("tr", {}, el("td", {}, n), el("td", {}, `${s.kept} kept / ${s.raw} fetched`), el("td", { class: s.error ? "err" : "" }, s.error ? "failed" : "ok")));
     $("#sources").replaceChildren(rows.length ? el("table", {}, ...rows) : el("p", { class: "muted" }, "No run yet."));
     const repo = repoInfo();
-    $("#cfgLink").href = repo + "/edit/main/config.yml";
-    $("#guideLink").href = repo + "/blob/main/GUIDE.md";
+    $("#cfgLink").href = repo + "/edit/HEAD/config.yml";
+    $("#guideLink").href = repo + "/blob/HEAD/GUIDE.md";
   }
   const fmtOff = (n) => (n >= 0 ? "+" : "") + n;
 
