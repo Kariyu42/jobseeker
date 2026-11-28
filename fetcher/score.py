@@ -74,4 +74,6 @@ def score(job: dict, cfg: dict, now: datetime | None = None) -> tuple[int, list[
     # eligibility
     elig = job.get("eligibility")
     pts += {"eligible": 10, "unclear": 0, "not_eligible": -40}.get(elig, 0)
+    if elig == "eligible" and job.get("where") == "must_move":
+        pts -= 5  # you can apply, but only by relocating: rank below from-home jobs
     return max(0, min(100, pts)), hits

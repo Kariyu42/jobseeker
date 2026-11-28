@@ -55,6 +55,7 @@
           </label>
           <label class="check"><input id="hideTracked" type="checkbox" checked> Hide tracked</label>
           <label class="check"><input id="newOnly" type="checkbox"> New only</label>
+          <label class="check"><input id="includeMove" type="checkbox" checked> 🧳 Include jobs where I'd have to move</label>
         </div>
         </details>
       </div>
@@ -66,6 +67,16 @@
     <section id="view-tracker" class="view" aria-label="Tracker">
       <div id="pipeline" class="pipeline"></div>
       <div id="tracker" class="list"></div>
+    </section>
+
+    <!-- COUNTRIES -->
+    <section id="view-countries" class="view" aria-label="Country rules">
+      <div class="panel">
+        <h2>Where can you live and work?</h2>
+        <p class="small muted">What a job's location means for you, living in France as an EU citizen: whether you're allowed to work there, what you'd have to do if you moved, and how a foreign company can hire you without you moving.</p>
+        <input id="countryQ" type="search" placeholder="Search a country…" aria-label="Search a country">
+      </div>
+      <div id="countries" class="list"></div>
     </section>
 
     <!-- SETTINGS -->
@@ -119,6 +130,7 @@
   <nav class="tabs" aria-label="Sections">
     <button data-view="jobs" class="on"><span>🔎</span>Jobs</button>
     <button data-view="tracker"><span>📋</span>Tracker <b id="trkBadge" class="badge" hidden></b></button>
+    <button data-view="countries"><span>🌍</span>Countries</button>
     <button data-view="settings"><span>⚙️</span>Settings</button>
   </nav>
 
@@ -131,7 +143,8 @@
           <p class="meta small muted"></p>
         </div>
       </div>
-      <p class="elig small"></p>
+      <button type="button" class="elig small" aria-expanded="false"></button>
+      <div class="rules" hidden></div>
       <div class="chips"></div>
       <details>
         <summary class="small">Details</summary>

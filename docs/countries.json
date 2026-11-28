@@ -1,0 +1,361 @@
+{
+  "reviewed": "2026-11-28",
+  "for": "A French / EU citizen currently living in France, working as an employee in tech (DevOps).",
+  "disclaimer": "General information, not legal or tax advice. Rules change and vary by city: always confirm on the official page linked for each country before you act.",
+  "common": {
+    "eu_move": {
+      "title": "Moving to another EU/EEA country or Switzerland (applies to all of them)",
+      "points": [
+        "As an EU citizen you need no visa or work permit to work there. EU free movement covers Iceland, Norway and Liechtenstein via the EEA, and Switzerland via its free-movement agreement.",
+        "For the first 3 months you can't be required to hold a residence document. After that, most countries make you register (details per country below).",
+        "Social security follows the country where you physically work (EU Regulation 883/2004). If you move and work there, you contribute there, not in France.",
+        "Health: the European Health Insurance Card (EHIC / carte européenne d'assurance maladie) is only for temporary stays. Once you live and work in the new country, you are insured there through your job.",
+        "Tax: you usually become tax-resident where you live and work. France keeps you as a French tax resident if your home (foyer) or main stay (183+ days a year), your main professional activity, or your economic interests are in France (article 4 B CGI). Tax treaties settle double-residence cases. Tell the French tax office you've left."
+      ],
+      "sources": [
+        {"label": "EU Commission: EHIC vs S1 when moving", "url": "https://employment-social-affairs.ec.europa.eu/policies-and-activities/moving-working-europe/eu-social-security-coordination/european-health-insurance-card_en"},
+        {"label": "service-public.fr: tax domicile (domicile fiscal)", "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F62?lang=en"},
+        {"label": "service-public.fr: income tax when you go to live or work abroad", "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F31442?lang=en"}
+      ]
+    },
+    "stay_in_france": {
+      "title": "Working from France for a foreign company: why \"must live in X\" happens, and the ways around it",
+      "points": [
+        "If you work physically from France, French social security applies, even if the company is German, Spanish, etc. (EU Regulation 883/2004).",
+        "So a foreign employer must register in France with URSSAF's foreign-companies centre (CNFE, form E0), get a SIRET and pay French contributions. Many small companies don't want to, so they write \"must live in Germany\".",
+        "Exception, for partial telework only: under the EU cross-border telework framework agreement, which France signed in force from 1 July 2023, an employee who teleworks from France at least 25% but under 50% of their time can stay on the employer country's social security if both countries signed and the employer applies. It doesn't cover 100% remote.",
+        "Income tax: work done from France is French-source income, and as a French resident you're taxed in France. The foreign employer may have to withhold French tax at source (prélèvement à la source), or you pay instalments yourself.",
+        "Ways the job can still work while you stay in France: (1) the company registers as an employer in France via CNFE; (2) it hires you through an Employer of Record (Deel, Remote.com, Oyster…), which employs you on a French contract; (3) you work as a contractor through your own micro-entreprise or company (SASU/EURL); (4) portage salarial: you invoice the client through a portage company and stay a salaried employee, with French social security and unemployment rights.",
+        "Tip: when a ✅🧳 job says \"must live in X\", ask the recruiter: \"Can you hire me in France via an EOR or as a contractor?\" Many say yes."
+      ],
+      "sources": [
+        {"label": "CLEISS: foreign employer hiring someone to work in France", "url": "https://www.cleiss.fr/employeurs/empl_etranger_embaucheenfrance.html"},
+        {"label": "service-public.fr: registering a foreign employer without a French establishment", "url": "https://entreprendre.service-public.fr/vosdroits/R34182?lang=en"},
+        {"label": "CLEISS: cross-border telework in Europe", "url": "https://www.cleiss.fr/employeurs/teletravail-transfrontalier.html"},
+        {"label": "Belgian social security (depositary): telework framework agreement and signatories", "url": "https://socialsecurity.belgium.be/en/internationally-active/cross-border-telework-eu-eea-and-switzerland"},
+        {"label": "impots.gouv.fr: employees working outside France", "url": "https://www.impots.gouv.fr/portail/files/media/3_Documentation/depliants/part_employees_working_outside_france.pdf"}
+      ]
+    }
+  },
+  "countries": {
+    "france": {
+      "name": "France", "group": "home",
+      "right_to_work": "Your home country: no formalities.",
+      "register": "Nothing to do. If a foreign company hires you here, see \"Working from France for a foreign company\".",
+      "notes": [],
+      "sources": [{"label": "service-public.fr", "url": "https://www.service-public.gouv.fr/"}]
+    },
+    "germany": {
+      "name": "Germany", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Anmeldung (address registration) at the local Bürgeramt, normally within 14 days of moving in (10–14 days depending on the state). Appointments can take weeks in big cities, so book early. You get your tax ID (Steuer-ID) by post after registering.",
+      "notes": ["Many non-tech companies expect German, but international tech companies often work in English."],
+      "sources": [
+        {"label": "Berlin Business Immigration / Willkommenszentrum: Anmeldung", "url": "https://willkommenszentrum.berlin.de/en/housing/residence-registration"},
+        {"label": "German embassy: information for EU citizens", "url": "https://canada.diplo.de/ca-en/consular-services/visa/infoeucitizen"}
+      ]
+    },
+    "spain": {
+      "name": "Spain", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "EU citizen registration certificate (certificado de registro de ciudadano de la UE, form EX-18) if you stay more than 3 months. Apply in person, by appointment, at the provincial Oficina de Extranjería or police station within 3 months of arrival. The certificate shows your NIE (foreigner ID number), which you need for work, banking and tax.",
+      "notes": ["Also register at the town hall (empadronamiento) for local services."],
+      "sources": [
+        {"label": "Policía Nacional: EU citizen registration certificate", "url": "https://sede.policia.gob.es/portalCiudadano/_en/tramites_extranjeria_tramite_certificadoregistro_ciudadanoue.php"},
+        {"label": "administracion.gob.es: registering your residence", "url": "https://administracion.gob.es/pag_Home/en/Tu-espacio-europeo/derechos-obligaciones/ciudadanos/residencia/obtencion-residencia/inscribirte-residente.html"}
+      ]
+    },
+    "portugal": {
+      "name": "Portugal", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "EU citizen registration certificate (CRUE) at the Câmara Municipal (town hall) where you live, required if you stay more than 3 months. Staying longer without it can be fined €400–€1,500. You'll also need a NIF (tax number) and a NISS (social security number) to be employed.",
+      "notes": [],
+      "sources": [
+        {"label": "ePortugal: living in Portugal as an EU citizen", "url": "https://eportugal.gov.pt/en/cidadaos-europeus-viajar-viver-e-fazer-negocios-em-portugal/viver-em-portugal/residir-em-portugal"},
+        {"label": "gov.pt: registration certificate for EU citizens", "url": "https://www.gov.pt/en/servicos/pedir-o-certificado-de-registo-para-cidadao-da-ue-eee-suica"}
+      ]
+    },
+    "netherlands": {
+      "name": "Netherlands", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Register in the Personal Records Database (BRP) at your municipality within 5 days of arrival if you'll live there more than 4 months. You get your BSN (citizen service number, needed for work and tax). Late registration can be fined up to €325.",
+      "notes": ["The Netherlands is very English-friendly in tech."],
+      "sources": [
+        {"label": "government.nl: when to register in the BRP", "url": "https://www.government.nl/topics/personal-data/question-and-answer/when-should-i-register-with-the-personal-records-database-as-a-resident"}
+      ]
+    },
+    "italy": {
+      "name": "Italy", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "After 3 months, register as a resident (iscrizione anagrafica) at the Anagrafe office of your comune. Get a codice fiscale (tax code) from the Agenzia delle Entrate, needed for a job contract.",
+      "notes": ["Document lists vary by comune, so check your comune's site."],
+      "sources": [
+        {"label": "Polizia di Stato: EU citizens", "url": "https://poliziadistato.it/articolo/10930"}
+      ]
+    },
+    "belgium": {
+      "name": "Belgium", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Register at your commune's foreigners' department. Communes commonly ask within 8 working days of arrival, and the federal rule for stays over 3 months is within 3 months. The police check your address, then you get an Annex 19, followed by a registration certificate (Annex 8) or an E-card.",
+      "notes": [],
+      "sources": [
+        {"label": "Immigration Office (IBZ): residence over 3 months for EU citizens", "url": "https://dofi.ibz.be/en/themes/citizens-european-union/right-entry-and-residence/right-entry-and-residence-belgium-eu-2"},
+        {"label": "City of Brussels: registration of an EU employee", "url": "https://www.brussels.be/node/65113"}
+      ]
+    },
+    "luxembourg": {
+      "name": "Luxembourg", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Declaration of arrival at the commune within 8 days of arriving, then the registration certificate at the commune within 3 months.",
+      "notes": ["Many people working in Luxembourg live in France and commute (frontaliers). That's a separate set of tax and social-security rules, so check if this applies to you."],
+      "sources": [
+        {"label": "guichet.lu: staying and working more than 90 days as an EU citizen", "url": "https://guichet.public.lu/en/citoyens/immigration/plus-3-mois/citoyen-UE/conditions-entree/sejour-travail.html"}
+      ]
+    },
+    "austria": {
+      "name": "Austria", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Two steps: (1) Meldezettel, registering your address within 3 days of moving in; (2) Anmeldebescheinigung, a registration certificate, within 4 months of entry if you stay more than 3 months (MA 35 in Vienna, the district authority elsewhere).",
+      "notes": ["German is usually expected outside international companies."],
+      "sources": [
+        {"label": "oesterreich.gv.at: EU citizens, registration certificate", "url": "https://www.oesterreich.gv.at/en/themen/menschen_aus_anderen_staaten/aufenthalt/4/2/Seite.120810"},
+        {"label": "City of Vienna: mandatory residence registration", "url": "https://wien.gv.at/english/living-working/registration/index.html"}
+      ]
+    },
+    "ireland": {
+      "name": "Ireland", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "No residence registration for EU citizens. You need a PPS number (Personal Public Service number) for tax and social welfare. It's allocated at an in-person appointment (bookable on MyWelfare.ie) and needs a job offer letter for work.",
+      "notes": ["Without a PPS number your pay is taxed at emergency rates."],
+      "sources": [
+        {"label": "gov.ie: get a PPS number", "url": "https://www.gov.ie/en/department-of-social-protection/services/get-a-personal-public-service-pps-number"}
+      ]
+    },
+    "sweden": {
+      "name": "Sweden", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "If you'll live there 1 year or more, register in the Population Register (folkbokföring) with Skatteverket, showing proof of your right of residence (e.g. your employment contract). You then get a personnummer, which is needed for almost everything.",
+      "notes": [],
+      "sources": [
+        {"label": "Skatteverket: moving to Sweden as an EU citizen who works", "url": "https://skatteverket.se/servicelankar/otherlanguages/inenglish/individualsandemployees/movingtosweden/citizenofeueeacountry/youareworking.4.5a85666214dbad743ffff42.html"}
+      ]
+    },
+    "denmark": {
+      "name": "Denmark", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months: (1) an EU residence document from SIRI; (2) then a CPR number (civil registration) at your municipality once you have an address.",
+      "notes": [],
+      "sources": [
+        {"label": "nyidanmark.dk (SIRI): EU employee", "url": "https://nyidanmark.dk/en-GB/Applying/Residence%20as%20EU%20Swiss%20or%20Nordic%20citizen/EU%20employee"},
+        {"label": "borger.dk: residence for EU citizens", "url": "https://www.borger.dk/forberedelse/uk-2-residence-in-denmark-for-eu-eea-swiss-citizens"}
+      ]
+    },
+    "finland": {
+      "name": "Finland", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Register your right of residence with Migri (Finnish Immigration Service) within 3 months of arrival, online via Enter Finland, then visit a service point. After that, DVV (Digital and Population Data Services Agency) gives you a personal identity code and registers your address.",
+      "notes": [],
+      "sources": [
+        {"label": "Migri: registration of an EU citizen's right of residence", "url": "https://migri.fi/en/eu-citizen"},
+        {"label": "InfoFinland: registering as an EU citizen", "url": "https://www.infofinland.fi/moving-to-finland/eu-citizens/registration-of-an-eu-citizens-right-of-residence"}
+      ]
+    },
+    "poland": {
+      "name": "Poland", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, register your residence in person at the voivode's office (urząd wojewódzki) no later than the day after the 3 months end. It's free, and the certificate is valid 10 years. Not registering can be fined. Address registration (zameldowanie) at the municipality is a separate step.",
+      "notes": [],
+      "sources": [
+        {"label": "gov.pl: registration of residence of an EU citizen", "url": "https://www.gov.pl/web/mswia-en/registration-of-residence"}
+      ]
+    },
+    "czechia": {
+      "name": "Czechia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "If you stay more than 30 days, report your place of residence to the Foreign Police within 30 days of entry. That's not needed if your hotel or landlord reported you.",
+      "notes": [],
+      "sources": [
+        {"label": "portal.gov.cz: registration of residence by an EU citizen", "url": "https://portal.gov.cz/en/sluzby-vs/registration-of-residence-by-an-eu-citizen-or-a-family-member-of-an-eu-citizen-after-arrival-in-the-czech-republic-S7764"}
+      ]
+    },
+    "slovakia": {
+      "name": "Slovakia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, register your residence in person at the Foreign Police within 30 days after your first 3 months, booking an appointment online. It's free, and the certificate is issued the same day.",
+      "notes": [],
+      "sources": [
+        {"label": "slovensko.sk: residence of EU citizens", "url": "https://slovensko.sk/en/life-situation/life-situation/_residence-of-union-citizens-an"}
+      ]
+    },
+    "slovenia": {
+      "name": "Slovenia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, get a residence registration certificate at the administrative unit (upravna enota) where you live.",
+      "notes": [],
+      "sources": [
+        {"label": "gov.si: entry and residence", "url": "https://gov.si/en/topics/entry-and-residence/"}
+      ]
+    },
+    "hungary": {
+      "name": "Hungary", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "If you stay more than 90 days in any 180-day period, apply for a registration certificate with the Immigration and Citizenship Office (OIF) no later than the 93rd day after entry. You can apply online via Enter Hungary.",
+      "notes": [],
+      "sources": [
+        {"label": "OIF: registration certificate for EEA nationals", "url": "https://oif.gov.hu/factsheets/registration-certificate-for-eea-nationals"},
+        {"label": "Embassy of Hungary: long-term stay", "url": "https://haga.mfa.gov.hu/en/long-term-stay-in-hungary"}
+      ]
+    },
+    "romania": {
+      "name": "Romania", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, get a registration certificate at the territorial office of the General Inspectorate for Immigration (IGI) in your county, by appointment. Required documents depend on your status (e.g. employment contract).",
+      "notes": [],
+      "sources": [
+        {"label": "PwC tax summaries: Romania, residence formalities", "url": "https://taxsummaries.pwc.com/romania/individual/other-issues"}
+      ]
+    },
+    "bulgaria": {
+      "name": "Bulgaria", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, apply for a residence certificate within 3 months of entry at the Migration Directorate of the Ministry of Interior (or the regional migration office).",
+      "notes": [],
+      "sources": [
+        {"label": "Bulgaria eGov point of single contact: EU citizens", "url": "https://psc.egov.bg/en/bulgaria-eu-citizens"}
+      ]
+    },
+    "greece": {
+      "name": "Greece", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "After 3 months, get the EU citizen registration certificate (Βεβαίωση Εγγραφής) from the police (Aliens Department). It's issued on submission for a small fee. You'll also need an AFM (tax number) to work.",
+      "notes": [],
+      "sources": [
+        {"label": "gov.gr: obligation to register residence over 3 months", "url": "https://www.gov.gr/en/sdg/residence/temporary-or-permanent-move/general/obligation-for-citizens-to-register-their-residence-for-periods-exceeding-three-months"},
+        {"label": "Mitos: registration certificate for EU employees", "url": "https://en.mitos.gov.gr/index.php/%CE%94%CE%94:Certificate_of_registration_for_citizens_of_the_Union_residing_in_Greece_as_employees_or_non-employees"}
+      ]
+    },
+    "croatia": {
+      "name": "Croatia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "If you'll stay more than 3 months, register temporary residence at the police station for your address. The official page says within 8 days. The certificate is issued without delay.",
+      "notes": [],
+      "sources": [
+        {"label": "gov.hr: registration of temporary residence for EEA nationals", "url": "https://gov.hr/en/registration-of-temporary-residence-for-eea-nationals/1208"}
+      ]
+    },
+    "cyprus": {
+      "name": "Cyprus", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Registration certificate (form MEU1, the \"yellow slip\") at the Civil Registry and Migration Department within 4 months of entry.",
+      "notes": [],
+      "sources": [
+        {"label": "Ministry of Interior: Civil Registry and Migration Department", "url": "https://moi.gov.cy/MOI/CRMD/crmd.nsf/All/0C6B5279E8E5086CC22589330037689E"}
+      ]
+    },
+    "malta": {
+      "name": "Malta", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "If you'll stay more than 3 months, apply for a residence document through Identità's Expatriates Unit (online portal). Your employment must be registered with Jobsplus.",
+      "notes": ["English is an official language."],
+      "sources": [
+        {"label": "Identità: EU nationals, employment", "url": "https://identita.gov.mt/expatriates-unit-main-page/eu-nationals/eresidence-document-application/employment/"}
+      ]
+    },
+    "estonia": {
+      "name": "Estonia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "Register your residence address in the Population Register within 3 months of entry. This gives you a personal ID code and a 5-year right of residence. Then apply for the Estonian ID card at the Police and Border Guard Board within 1 month.",
+      "notes": ["Very digital administration, and English widely used in tech."],
+      "sources": [
+        {"label": "Citizen of the European Union Act (Riigi Teataja)", "url": "https://www.riigiteataja.ee/en/eli/ee/513012015011/consolide"},
+        {"label": "Tallinn: right of temporary residence for EU citizens", "url": "https://www.tallinn.ee/en/issuance-right-temporary-residence-citizen-european-union"}
+      ]
+    },
+    "latvia": {
+      "name": "Latvia", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, get a registration certificate from the Office of Citizenship and Migration Affairs (PMLP), then declare your place of residence.",
+      "notes": [],
+      "sources": [
+        {"label": "PMLP: residence documents for EU citizens", "url": "https://www.pmlp.gov.lv/en/what-residence-documents-are-issued-union-citizens-and-their-family-members"}
+      ]
+    },
+    "lithuania": {
+      "name": "Lithuania", "group": "eu",
+      "right_to_work": "Yes: EU free movement, no permit.",
+      "register": "For stays over 3 months, get a certificate of residence from the Migration Department (apply via MIGRIS). Then declare your place of residence at the municipality within 1 month.",
+      "notes": [],
+      "sources": [
+        {"label": "Migration Department: certificate of the right of residence", "url": "https://migracija.lrv.lt/en/activities/identity-documents/certificate-of-the-right-of-residence/certificate-of-the-right-of-residence-2022/"},
+        {"label": "Go Vilnius: registering as a resident (EU citizens)", "url": "https://www.govilnius.lt/registering-as-a-resident-eu-citizens"}
+      ]
+    },
+    "norway": {
+      "name": "Norway", "group": "eea",
+      "right_to_work": "Yes: EEA free movement, no work permit.",
+      "register": "If you stay more than 3 months, register online with UDI, then attend a police appointment to get a registration certificate. You also need a tax deduction card (skattekort) from Skatteetaten before you're paid.",
+      "notes": ["Not in the EU but in the EEA. The same free movement applies to you."],
+      "sources": [
+        {"label": "UDI: registration certificate for EU/EEA nationals", "url": "https://www.udi.no/en/word-definitions/registration-certificate-for-eueea-nationals/"},
+        {"label": "Skatteetaten: tax deduction card when moving to Norway to work", "url": "https://www.skatteetaten.no/en/person/to-from-norway/to/work/tax-deduction-card/"}
+      ]
+    },
+    "iceland": {
+      "name": "Iceland", "group": "eea",
+      "right_to_work": "Yes: EEA free movement, no work permit.",
+      "register": "Register legal domicile with Registers Iceland (Þjóðskrá). It's possible from 3 months and mandatory if you stay 6 months or more. This gives you a kennitala (ID number), needed for bank accounts and pay.",
+      "notes": [],
+      "sources": [
+        {"label": "Registers Iceland: EEA/EFTA citizens staying more than 6 months", "url": "https://skra.is/english/people/change-of-address/moving-to-iceland/i-am-an-eea-efta-citizen/staying-more-than-6-months/"}
+      ]
+    },
+    "liechtenstein": {
+      "name": "Liechtenstein", "group": "eea",
+      "right_to_work": "Yes, but living there is restricted. EEA citizens get residence permits only under a small yearly quota, half drawn by lottery twice a year.",
+      "register": "Most people who work there live in Switzerland or Austria and commute daily. EEA cross-border commuters file a commuter registration (GMB) within 10 days of starting work.",
+      "notes": ["Realistically, a Liechtenstein-only job means living nearby and commuting."],
+      "sources": [
+        {"label": "Liechtenstein Migration and Passport Office: residence permit draw", "url": "https://llv.li/en/national-administration/migration-and-passport-office/residence-in-liechtenstein-for-employment-purposes/draw-residence-permit-b-"},
+        {"label": "Liechtenstein: commuter registration for EEA nationals", "url": "https://www.llv.li/en/national-administration/migration-and-passport-office/employment-without-residence/grenzgaengermeldebestaetigung-fuer-ewrstaatsangehoerige-gmb-"}
+      ]
+    },
+    "switzerland": {
+      "name": "Switzerland", "group": "ch",
+      "right_to_work": "Yes: the EU–Swiss free movement agreement. Jobs over 3 months need a permit, but it's granted based on your contract.",
+      "register": "Register with your commune within 14 days of arrival and before starting work. You get an L permit (contract under 1 year) or a B permit (1 year or more / open-ended).",
+      "notes": ["Not in the EU: the same EU social-security coordination applies, but salaries, costs and taxes are very different."],
+      "sources": [
+        {"label": "SEM: EU/EFTA citizens in Switzerland (FAQ)", "url": "https://www.sem.admin.ch/sem/en/home/themen/fza_schweiz-eu-efta/eu-efta_buerger_schweiz/faq.html"},
+        {"label": "ch.ch: working in Switzerland as an EU/EFTA citizen", "url": "https://ch.ch/en/working-switzerland-eu-efta"}
+      ]
+    },
+    "united kingdom": {
+      "name": "United Kingdom", "group": "uk",
+      "right_to_work": "No (since Brexit). You need a work visa, usually the Skilled Worker visa, which needs a job offer from a UK employer licensed to sponsor you and English at B1 level.",
+      "register": "Only after you have a visa. A UK-only remote job can't legally employ you from France as a UK employee. Some UK companies hire Europeans as contractors or via an EOR, so ask.",
+      "notes": ["People who already lived in the UK before 2021 may have status under the EU Settlement Scheme. That doesn't apply to new arrivals."],
+      "sources": [
+        {"label": "gov.uk: points-based system information for EU citizens", "url": "https://www.gov.uk/guidance/the-uks-points-based-immigration-system-information-for-eu-citizens"}
+      ]
+    },
+    "united states": {
+      "name": "United States", "group": "other",
+      "right_to_work": "No. You need a US work visa sponsored by an employer (e.g. H-1B, which goes through a yearly lottery). There's no special route for EU citizens.",
+      "register": "\"US only\" remote jobs require US work authorization. A US company can still hire you in France via an EOR or as a contractor, but then the job isn't \"US only\".",
+      "notes": [],
+      "sources": [
+        {"label": "USCIS: H-1B specialty occupations", "url": "https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations"}
+      ]
+    },
+    "canada": {
+      "name": "Canada", "group": "other",
+      "right_to_work": "Not automatically. You need a work permit. Routes for French/EU citizens include International Experience Canada (working holiday / young professionals, age limits apply) and some CETA trade-agreement categories.",
+      "register": "Apply for the permit from outside Canada before starting work.",
+      "notes": [],
+      "sources": [
+        {"label": "Government of Canada: International Experience Canada", "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada/iec.html"},
+        {"label": "Government of Canada: work in Canada", "url": "https://www.canada.ca/en/immigration-refugees-citizenship/services/work-canada.html"}
+      ]
+    }
+  }
+}

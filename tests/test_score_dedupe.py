@@ -80,3 +80,11 @@ def test_helpers():
     assert fmt_salary(90000, 120000, "USD") == "$90k–$120k"
     assert salary_max("$90k–$120k") == 120000
     assert salary_max("€70.000 - €85.000") == 85000
+
+
+def test_kept_old_jobs_are_reclassified_with_current_rules():
+    old = {"jobs": [{**process([mk(loc="Germany")], CFG, NOW)[0], "where": None, "elig_reason": "stale"}]}
+    old["jobs"][0].pop("_fulltext", None)
+    old["jobs"][0]["first_seen"] = NOW.isoformat()
+    merged = merge_history([], old, CFG, NOW + timedelta(hours=6))
+    assert merged[0]["where"] == "must_move" and "Germany" in merged[0]["elig_reason"]

@@ -18,10 +18,11 @@
   const save = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* ignore */ } };
 
   let store = load(KEY, { v: 1, items: {} });
-  let prefs = Object.assign({ elig: "eligible", sort: "score", age: "0", source: "", minScore: 0, hideTracked: true, newOnly: false, theme: "" }, load(PREF_KEY, {}));
+  let prefs = Object.assign({ elig: "eligible", sort: "score", age: "0", source: "", minScore: 0, hideTracked: true, newOnly: false, includeMove: true, theme: "" }, load(PREF_KEY, {}));
   let sync = load(SYNC_KEY, { token: "", gistId: "", last: "" });
   const lastVisit = load(SEEN_KEY, null);
   let data = { jobs: [] };
+  let rules = null; // docs/countries.json: per-country rules for someone living in France
   let trackerFilter = "";
 
   // ---------- utils ----------
@@ -91,6 +92,7 @@
     $$(".view").forEach(v => v.classList.toggle("active", v.id === "view-" + view));
     if (view === "tracker") renderTracker();
     if (view === "settings") renderSettings();
+    if (view === "countries") renderCountries();
     window.scrollTo(0, 0);
   }
   $$(".tabs button").forEach(b => b.addEventListener("click", () => show(b.dataset.view)));
@@ -105,6 +107,8 @@
     $("#sort").value = prefs.sort; $("#age").value = prefs.age;
     $("#minScore").value = prefs.minScore; $("#minScoreOut").textContent = prefs.minScore;
     $("#hideTracked").checked = prefs.hideTracked; $("#newOnly").checked = prefs.newOnly;
+    $("#includeMove").checked = prefs.includeMove;
+    $("#includeMove").onchange = e => { prefs.includeMove = e.target.checked; changed(); };
     $("#sort").onchange = e => { prefs.sort = e.target.value; changed(); };
     $("#age").onchange = e => { prefs.age = e.target.value; changed(); };
     $("#source").onchange = e => { prefs.source = e.target.value; changed(); };
@@ -123,6 +127,7 @@
     let list = data.jobs.filter(j => {
       if (prefs.elig === "eligible" && j.eligibility !== "eligible") return false;
       if (prefs.elig === "unclear" && j.eligibility === "not_eligible") return false;
+      if (!prefs.includeMove && j.where === "must_move") return false;
       if (j.score < prefs.minScore) return false;
       if (prefs.source && !(j.sources || [j.source]).includes(prefs.source)) return false;
       if (maxAge && (days(j.posted_at || j.first_seen) ?? 0) > maxAge) return false;
@@ -153,8 +158,18 @@
     const a = $(".title", c); a.textContent = j.title; a.href = safeUrl(j.url);
     $(".meta", c).textContent = [j.company, ago(j.posted_at || j.first_seen), (j.sources || [j.source]).join(" + ")].join(" · ");
     const e = $(".elig", c); e.classList.add(j.eligibility);
+    if (j.where === "must_move") e.classList.add("move");
     const showLoc = j.location && !(j.elig_reason || "").toLowerCase().includes(j.location.toLowerCase());
-    e.textContent = `${ELIG_ICON[j.eligibility] || ""} ${j.elig_reason || ""}${showLoc ? " — " + j.location.slice(0, 80) : ""}`;
+    const icon = j.where === "must_move" ? "🧳" : (ELIG_ICON[j.eligibility] || "");
+    e.textContent = `${icon} ${j.elig_reason || ""}${showLoc ? " — " + j.location.slice(0, 80) : ""}`;
+    e.append(el("span", { class: "more-hint" }, " · what this means ▾"));
+    const panel = $(".rules", c);
+    e.onclick = () => {
+      const open = panel.hidden;
+      if (open && !panel.childElementCount) renderRules(panel, j);
+      panel.hidden = !open;
+      e.setAttribute("aria-expanded", String(open));
+    };
     const chips = $(".chips", c);
     if (isNew(j)) chips.append(el("span", { class: "chip new" }, "NEW"));
     if (j.active === false) chips.append(el("span", { class: "chip warn" }, "no longer listed"));
@@ -177,7 +192,11 @@
     const list = filtered();
     const box = $("#jobs"); box.replaceChildren();
     const total = data.jobs.length;
-    $("#count").textContent = `${list.length} of ${total} jobs` + (data.counts ? ` · ✅ ${data.counts.eligible} can hire you · ⚠️ ${data.counts.unclear} unclear · ❌ ${data.counts.not_eligible} can't` : "");
+    const wc = data.where_counts;
+    const home = (data.profile && data.profile.home_country) || "home";
+    $("#count").textContent = `${list.length} of ${total} jobs` + (wc
+      ? ` · ✅ ${wc.from_home} from ${home} · 🧳 ${wc.must_move} if you move · ⚠️ ${data.counts.unclear} unclear · ❌ ${wc.not_allowed} can't`
+      : data.counts ? ` · ✅ ${data.counts.eligible} can hire you · ⚠️ ${data.counts.unclear} unclear · ❌ ${data.counts.not_eligible} can't` : "");
     if (!total) {
       box.append(el("div", { class: "empty" }, data.generated_at ? "No jobs matched your config yet." : "No jobs fetched yet. Run the “Fetch jobs” workflow on GitHub (Actions tab), or wait for the next scheduled run."));
       return;
@@ -190,6 +209,72 @@
       box.append(el("button", { class: "btn", onclick: () => { renderLimit += 60; renderJobs(); } }, `Show more (${list.length - renderLimit})`));
     }
   }
+
+  // ---------- "what this means for you": per-country rules ----------
+  const sourceLinks = (sources) => el("p", { class: "small src" }, "Official info: ",
+    ...(sources || []).flatMap((s, i) => [i ? " · " : "", el("a", { href: safeUrl(s.url), target: "_blank", rel: "noopener" }, s.label)]));
+
+  function countryBlock(key, open = false) {
+    const c = rules && rules.countries[key];
+    if (!c) return el("p", { class: "small muted" }, `No rules saved for ${key}. Check the official immigration site of that country.`);
+    const d = el("details", { class: "country" },
+      el("summary", {}, el("b", {}, c.name), " ", el("span", { class: "muted small" }, c.right_to_work.split(".")[0])),
+      el("p", { class: "small" }, el("b", {}, "Right to work: "), c.right_to_work),
+      el("p", { class: "small" }, el("b", {}, "If you move there: "), c.register),
+      ...(c.notes || []).map(n => el("p", { class: "small muted" }, n)),
+      sourceLinks(c.sources));
+    d.open = open;
+    return d;
+  }
+
+  function commonBlock(key, open = false) {
+    const sec = rules && rules.common[key];
+    if (!sec) return null;
+    const d = el("details", { class: "country" }, el("summary", {}, el("b", {}, sec.title)),
+      el("ul", { class: "small" }, ...sec.points.map(p => el("li", {}, p))), sourceLinks(sec.sources));
+    d.open = open;
+    return d;
+  }
+
+  function renderRules(panel, j) {
+    if (!rules) { panel.append(el("p", { class: "small muted" }, "Country rules are still loading (or you're offline).")); return; }
+    const home = (data.profile && data.profile.home_country) || "France";
+    const keys = j.where_countries || [];
+    if (j.where === "from_home") {
+      panel.append(el("p", { class: "small" }, `✅ You can do this job while living in ${home}. Nothing to change for you. If the company is based abroad, it still has to employ you under French rules (French payroll, an Employer of Record, or a contractor setup). That's normal and their job, not yours.`),
+        commonBlock("stay_in_france"));
+    } else if (j.where === "must_move") {
+      panel.append(el("p", { class: "small" }, `🧳 This company only hires people who live in ${keys.map(k => rules.countries[k]?.name || k).join(" or ")}. As an EU citizen you're allowed to move there and work, with no visa. Here's what that involves:`),
+        ...keys.slice(0, 3).map((k, i) => countryBlock(k, i === 0)),
+        commonBlock("eu_move"),
+        el("p", { class: "small" }, "Don't want to move? Ask the recruiter if they can hire you in France:"),
+        commonBlock("stay_in_france"));
+    } else if (j.where === "not_allowed") {
+      panel.append(el("p", { class: "small" }, "❌ This job is restricted to a place where you can't currently work, or to a timezone outside your hours."),
+        ...keys.slice(0, 3).map((k, i) => countryBlock(k, i === 0)));
+    } else {
+      panel.append(el("p", { class: "small" }, "⚠️ The posting doesn't say where you must live. Before applying, ask: \"Can you employ someone living in France?\" These explain the possible answers:"),
+        commonBlock("stay_in_france"), commonBlock("eu_move"));
+    }
+    panel.append(el("p", { class: "small muted" }, rules.disclaimer + ` Last reviewed ${rules.reviewed}.`));
+  }
+
+  function renderCountries() {
+    const box = $("#countries");
+    if (!rules) { box.replaceChildren(el("p", { class: "small muted" }, "Couldn't load country rules (offline?).")); return; }
+    const q = ($("#countryQ").value || "").trim().toLowerCase();
+    const groups = [["home", "Home"], ["eu", "EU: move freely"], ["eea", "EEA: move freely"], ["ch", "Switzerland: free movement agreement"], ["uk", "UK: visa needed"], ["other", "Outside Europe: visa needed"]];
+    const items = [];
+    for (const [g, label] of groups) {
+      const keys = Object.keys(rules.countries).filter(k => rules.countries[k].group === g && (!q || rules.countries[k].name.toLowerCase().includes(q)))
+        .sort((a, b) => rules.countries[a].name.localeCompare(rules.countries[b].name));
+      if (!keys.length) continue;
+      items.push(el("h3", { class: "group" }, label), ...keys.map(k => countryBlock(k)));
+    }
+    box.replaceChildren(commonBlock("eu_move"), commonBlock("stay_in_france"), ...items,
+      el("p", { class: "small muted" }, rules.disclaimer + ` Last reviewed ${rules.reviewed}.`));
+  }
+  $("#countryQ").oninput = () => renderCountries();
 
   // ---------- tracker view ----------
   const needsFollowUp = (it) => it.status === "applied" && days(it.applied_at) >= FOLLOW_UP_DAYS && (!it.followed_up_at || days(it.followed_up_at) >= FOLLOW_UP_DAYS);
@@ -344,6 +429,7 @@
       toast("Couldn't load jobs (offline?)");
     }
     data.jobs = data.jobs || [];
+    try { rules = await (await fetch("countries.json", { cache: "no-cache" })).json(); } catch { rules = null; }
     $("#updated").textContent = relTime(data.generated_at);
     const srcs = [...new Set(data.jobs.flatMap(j => j.sources || [j.source]))].sort();
     for (const s of srcs) $("#source").append(el("option", { value: s }, s));

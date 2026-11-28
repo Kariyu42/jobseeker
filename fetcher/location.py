@@ -209,15 +209,26 @@ def classify(job: dict, me: dict) -> dict:
         for r in find_regions(where):
             reside_countries |= REGIONS.get(r) or set()
 
-    def result(elig, reason):
+    home = user_countries({"home_country": me.get("home_country", "")})
+    home_name = str(me.get("home_country", "your country")).strip() or "your country"
+
+    def names(cs, n=3, joiner=", "):
+        cs = sorted(cs)
+        return joiner.join(c.title() for c in cs[:n]) + ("…" if len(cs) > n else "")
+
+    # where: from_home | must_move | not_allowed | unknown
+    def result(elig, reason, where="unknown", where_countries=()):
         return {"scope": scope, "eligibility": elig, "reason": reason,
-                "countries": sorted(countries)[:10], "contractor": contractor}
+                "countries": sorted(countries)[:10], "contractor": contractor,
+                "where": where, "where_countries": sorted(where_countries)[:10]}
+
+    def blocked(reason, cs=()):
+        return result("not_eligible", reason, "not_allowed", cs)
 
     if tz_ok is False:
-        return result("not_eligible", f"Timezone required: {tz_range(offsets)}")
+        return blocked(f"Timezone required: {tz_range(offsets)}")
     if reside_countries and not (reside_countries & mine):
-        shown = sorted(reside_countries)
-        return result("not_eligible", "Must live in " + ", ".join(shown[:3]).title() + ("…" if len(shown) > 3 else ""))
+        return blocked("Must live in " + names(reside_countries), reside_countries)
 
     # Structured restriction lists (e.g. Himalayas) are authoritative: if none of the
     # listed places is one you can work from, the job can't hire you, even when the
@@ -225,28 +236,34 @@ def classify(job: dict, me: dict) -> dict:
     listed = [x for x in job.get("location_list", []) if x]
     if listed and not explicit_worldwide and not (covered & mine):
         shown = ", ".join(listed[:3]) + ("…" if len(listed) > 3 else "")
-        return result("not_eligible", f"Restricted to {shown}")
+        return blocked(f"Restricted to {shown}", countries)
 
+    tz_note = f" ({tz_range(offsets)})" if offsets else ""
     if covered:
         if covered & mine:
             if us_only_text and "united states" not in mine:
                 return result("unclear", "Lists your region, but text mentions US-only terms")
-            hit = sorted(covered & mine)
-            if scope == "countries" and strict:
-                return result("unclear", "Country-specific: " + ", ".join(hit).title())
-            if scope == "countries":
-                return result("eligible", "Hires in " + ", ".join(c.title() for c in hit[:3]))
-            return result("eligible", "Hires in your region" + (f" ({tz_range(offsets)})" if offsets else ""))
+            if covered & home:
+                if scope == "countries":
+                    return result("eligible", f"Open to people in {home_name}{tz_note}", "from_home", covered & home)
+                region = next((r for r in ("emea", "europe", "eu") if r in regions), "europe")
+                label = {"emea": "EMEA", "eu": "the EU", "europe": "Europe"}[region]
+                return result("eligible", f"Anywhere in {label} (incl. {home_name}){tz_note}", "from_home", home)
+            hit = covered & mine
+            if strict:
+                return result("unclear", "Country-specific: " + names(hit), "must_move", hit)
+            return result("eligible", f"Must live in {names(hit, joiner=' or ')}: you'd need to move",
+                          "must_move", hit)
         if not worldwide:
-            where = ", ".join(sorted(countries)[:3]).title() or ", ".join(sorted(regions)).upper()
-            return result("not_eligible", f"Restricted to {where}")
+            where = names(countries) or ", ".join(sorted(regions)).upper()
+            return blocked(f"Restricted to {where}", countries)
 
     if us_only_text and "united states" not in mine:
-        return result("not_eligible", "Description says US-only / US work authorization")
+        return blocked("Description says US-only / US work authorization", {"united states"})
     if explicit_worldwide:
-        return result("eligible", "Worldwide" + (" · contractor/EOR" if contractor else ""))
+        return result("eligible", "Worldwide" + (" · contractor/EOR" if contractor else ""), "from_home", home)
     if tz_ok:
-        return result("eligible", "Timezone fits you")
+        return result("eligible", f"Timezone fits you{tz_note}", "from_home", home)
     if contractor:
         return result("unclear", "Location not stated · contractor-friendly")
     return result("unclear", "Location not stated — check the posting")

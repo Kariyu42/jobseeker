@@ -86,20 +86,28 @@ def process(raw: list[dict], cfg: dict, now: datetime) -> list[dict]:
     kept = dedupe(kept)
     out = []
     for j in kept:
-        try:  # one odd posting must never break the whole run
-            loc = classify(j, cfg.get("me", {}))
-            j.update({
-                "scope": loc["scope"],
-                "eligibility": loc["eligibility"],
-                "elig_reason": loc["reason"],
-                "contractor": loc["contractor"],
-            })
-            j["score"], j["skills"] = score(j, cfg, now)
-        except Exception as e:
-            log.warning("skipped job %r from %s: %s", j.get("title"), j.get("source"), e)
-            continue
-        out.append(j)
+        if enrich(j, cfg, now):
+            out.append(j)
     return out
+
+
+def enrich(j: dict, cfg: dict, now: datetime) -> bool:
+    """Classify location + score one job in place. False if it couldn't be processed."""
+    try:  # one odd posting must never break the whole run
+        loc = classify(j, cfg.get("me", {}))
+        j.update({
+            "scope": loc["scope"],
+            "eligibility": loc["eligibility"],
+            "elig_reason": loc["reason"],
+            "contractor": loc["contractor"],
+            "where": loc["where"],
+            "where_countries": loc["where_countries"],
+        })
+        j["score"], j["skills"] = score(j, cfg, now)
+        return True
+    except Exception as e:
+        log.warning("skipped job %r from %s: %s", j.get("title"), j.get("source"), e)
+        return False
 
 
 def merge_history(fresh: list[dict], previous: dict, cfg: dict, now: datetime, failed: set[str] = frozenset()) -> list[dict]:
@@ -121,7 +129,9 @@ def merge_history(fresh: list[dict], previous: dict, cfg: dict, now: datetime, f
         if jid not in out and (old.get("posted_at") or old["first_seen"]) >= cutoff:
             if not set(old.get("sources", [old.get("source")])) <= failed:
                 old["active"] = False  # no longer listed by the board; may be filled
-            out[jid] = old
+            # re-check with today's config/rules (the full text is gone; the snippet is enough)
+            if enrich(old, cfg, now):
+                out[jid] = old
     return sorted(out.values(), key=lambda j: (-j["score"], j.get("posted_at") or ""))
 
 
@@ -172,6 +182,8 @@ def run(only: list[str] | None = None, out_path: Path = OUT) -> dict:
                                                   "timezone_min", "timezone_max", "level")},
         "sources": per_source,
         "counts": {e: sum(j["eligibility"] == e for j in jobs) for e in ("eligible", "unclear", "not_eligible")},
+        "where_counts": {w: sum(j.get("where") == w for j in jobs)
+                         for w in ("from_home", "must_move", "not_allowed", "unknown")},
         "jobs": jobs,
     }
     out_path.parent.mkdir(parents=True, exist_ok=True)

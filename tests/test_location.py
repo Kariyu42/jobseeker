@@ -82,3 +82,27 @@ def test_unknown_country_in_structured_list_is_not_eligible():
     assert r["eligibility"] == "not_eligible" and "Azerbaijan" in r["reason"]
     r = classify(mk("Denmark, Brazil", location_list=["Denmark", "Brazil"]), ME)
     assert r["eligibility"] == "eligible"
+
+
+@pytest.mark.parametrize("loc,where,needle", [
+    ("France", "from_home", "Open to people in France"),
+    ("Europe", "from_home", "incl. France"),
+    ("EMEA", "from_home", "EMEA"),
+    ("Worldwide", "from_home", "Worldwide"),
+    ("Berlin, Germany", "must_move", "Must live in Germany"),
+    ("Spain", "must_move", "Must live in Spain"),
+    ("Spain, Portugal", "must_move", "Portugal or Spain"),
+    ("Bulgaria", "must_move", "Bulgaria"),
+    ("United Kingdom", "not_allowed", "United Kingdom"),
+    ("USA Only", "not_allowed", "United States"),
+])
+def test_where_you_have_to_live(loc, where, needle):
+    r = classify(mk(loc), ME)
+    assert r["where"] == where, r
+    assert needle in r["reason"], r
+
+
+def test_where_countries_for_country_pages():
+    assert classify(mk("Germany"), ME)["where_countries"] == ["germany"]
+    assert classify(mk("United Kingdom"), ME)["where_countries"] == ["united kingdom"]
+    assert classify(mk("Remote"), ME)["where"] == "unknown"
