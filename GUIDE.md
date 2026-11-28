@@ -59,10 +59,26 @@ Ranked by response rate for someone based in the EU:
 
 ## 5. Living in other places while working
 
-- **As an EU citizen** you can live and work in any EU/EEA country plus Switzerland (with registration). A "remote within EU" job lets you move between, say, Lisbon, Valencia and Berlin.
-  - Watch **tax residency**: more than 183 days in a country usually makes you tax-resident there.
-  - Tell your employer. Many allow it via their EOR, but some only employ in specific countries.
-- **Digital-nomad visas** for going beyond the EU: Portugal (D8), Spain, Croatia, Greece, Estonia, Malta, Georgia, the UAE and others. They mostly need a remote contract and a minimum monthly income.
+**What the badges on each job mean:**
+
+| Badge | Meaning | What you do |
+|---|---|---|
+| ✅ *Open to people in France* / *Anywhere in Europe (incl. France)* / *Worldwide* | You can do the job from where you live now. | Apply. The company handles hiring you in France (French payroll, an Employer of Record, or a contractor setup). |
+| 🧳 *Must live in Germany: you'd need to move* | The company only employs people who live in that country. As an EU citizen you're **allowed** to move there and work, with no visa. | Either move (tap the badge for that country's registration steps), or ask the recruiter if they can hire you in France via an EOR or as a contractor. |
+| ❌ *Restricted to United Kingdom / United States…* | You'd need a visa, or the timezone doesn't fit. | Skip, unless they offer contractor/EOR hiring abroad. |
+
+The app's **🌍 Countries** tab has the rules for each EU/EEA country, Switzerland, the UK, the US and Canada:
+- right to work;
+- what to register after moving, and the deadline;
+- how a foreign company can employ you while you stay in France;
+- links to official sources.
+
+Some key facts:
+- **As an EU citizen** you can live and work in any EU/EEA country plus Switzerland. In most of them you must register after arrival, usually within 3 months, but sometimes within days: Germany ~14 days, the Netherlands 5 days, Austria 3 days for the address.
+  - Watch **tax residency**: you usually become tax-resident where you live and work. France keeps you as a French tax resident if your home or main stay (183+ days), main job or economic interests are in France.
+  - If you move while keeping a remote job, tell your employer. Your social security moves with you, so they must be able to employ you in the new country.
+- **Why "must live in X" happens:** if you work from France, French social security applies even for a foreign employer. That employer must then register in France (URSSAF CNFE) or use an EOR. Partial telework from France (25% to under 50%) can stay under the employer country's system under the 2023 EU framework agreement, but 100% remote can't.
+- **Outside the EU** (UK, US, Canada, Georgia, the UAE…) you need a visa or work permit. Digital-nomad visas exist in several non-EU countries. Inside the EU you don't need them.
 - **Contractor/B2B status** (e.g. French *auto-entrepreneur* or a SASU) gives the most freedom over where you live. Many EU startups prefer contractors for international hires.
 - **Timezone:** staying within UTC-1 to UTC+4 keeps you eligible for nearly all EU roles. Set your range in `config.yml` (`timezone_min` / `timezone_max`).
 

@@ -1,6 +1,6 @@
 // App shell cached for offline use; jobs.json is network-first so it's always fresh when online.
-const CACHE = "jobseeker-v1";
-const SHELL = ["./", "index.html", "style.css", "app.js", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png"];
+const CACHE = "jobseeker-v2";
+const SHELL = ["./", "index.html", "style.css", "app.js", "manifest.json", "icon.svg", "icon-192.png", "icon-512.png", "countries.json"];
 
 self.addEventListener("install", (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
